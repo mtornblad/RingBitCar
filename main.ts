@@ -1,8 +1,10 @@
 bluetooth.onBluetoothConnected(function () {
     strip.showColor(neopixel.colors(NeoPixelColors.Green))
+    serial.writeString("BT Connect")
 })
 bluetooth.onBluetoothDisconnected(function () {
     strip.showColor(neopixel.colors(NeoPixelColors.Red))
+    serial.writeString("BT Disonnect")
 })
 control.onEvent(EventBusSource.MES_DPAD_CONTROLLER_ID, EventBusValue.MICROBIT_EVT_ANY, function () {
     if (control.eventValue() == EventBusValue.MES_DPAD_BUTTON_A_DOWN) {
@@ -22,13 +24,13 @@ control.onEvent(EventBusSource.MES_DPAD_CONTROLLER_ID, EventBusValue.MICROBIT_EV
     } else if (control.eventValue() == EventBusValue.MES_DPAD_BUTTON_D_UP) {
         RingbitCar.brake()
     } else {
-        serial.writeString("")
+        serial.writeString("" + (control.eventValue()))
     }
 })
 let strip: neopixel.Strip = null
-RingbitCar.init_wheel(AnalogPin.P1, AnalogPin.P2)
-strip = neopixel.create(DigitalPin.P0, 2, NeoPixelMode.RGB)
-strip.showColor(neopixel.colors(NeoPixelColors.Red))
 bluetooth.startUartService()
 serial.redirectToUSB()
 serial.setBaudRate(BaudRate.BaudRate115200)
+RingbitCar.init_wheel(AnalogPin.P1, AnalogPin.P2)
+strip = neopixel.create(DigitalPin.P0, 2, NeoPixelMode.RGB)
+strip.showColor(neopixel.colors(NeoPixelColors.Red))
